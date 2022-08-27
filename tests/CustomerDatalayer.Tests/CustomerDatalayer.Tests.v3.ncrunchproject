@@ -1,0 +1,24 @@
+﻿<ProjectConfiguration>
+  <Settings>
+    <IgnoredTests>
+      <FixtureTestSelector>
+        <FixtureName>AddressDatalayer.Tests.Repositories.AddressRepositoryTests</FixtureName>
+      </FixtureTestSelector>
+      <FixtureTestSelector>
+        <FixtureName>CustomerDatalayer.Tests.Entities.AddressTest</FixtureName>
+      </FixtureTestSelector>
+      <FixtureTestSelector>
+        <FixtureName>CustomerDatalayer.Tests.Entities.CustomerNoteTest</FixtureName>
+      </FixtureTestSelector>
+      <FixtureTestSelector>
+        <FixtureName>CustomerDatalayer.Tests.Entities.CustomerRepositoryTests</FixtureName>
+      </FixtureTestSelector>
+      <FixtureTestSelector>
+        <FixtureName>CustomerDatalayer.Tests.Entities.CustomerTest</FixtureName>
+      </FixtureTestSelector>
+      <FixtureTestSelector>
+        <FixtureName>CustomerDatalayer.Tests.Repositories.CustomerNoteRepositoryTests</FixtureName>
+      </FixtureTestSelector>
+    </IgnoredTests>
+  </Settings>
+</ProjectConfiguration>
