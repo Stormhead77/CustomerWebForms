@@ -8,6 +8,5 @@ namespace CustomerDatalayer.Interfaces
         TEntity Read(int entityCode);
         int Update(TEntity entity);
         int Delete(int entityCode);
-        List<TEntity> GetAll();
     }
 }

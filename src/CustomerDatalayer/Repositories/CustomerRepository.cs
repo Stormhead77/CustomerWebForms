@@ -1,21 +1,25 @@
 ﻿using CustomerDatalayer.Entities;
 using CustomerDatalayer.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace CustomerDatalayer.Repositories
 {
-    public class CustomerRepository : BaseRepository, IRepository<Customer>
+    public class CustomerRepository : BaseRepository<Customer>, IRepository<Customer>
     {
+        public CustomerRepository()
+        {
+            TableName = "Customers";
+        }
+
         public Customer Create(Customer customer)
         {
             using (var connection = GetConnection())
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand(
-                    "INSERT INTO [Customers] (FirstName, LastName, PhoneNumber, Email, TotalPurchasesAmount) " +
+                    $"INSERT INTO [{TableName}] (FirstName, LastName, PhoneNumber, Email, TotalPurchasesAmount) " +
                     "OUTPUT INSERTED.[CustomerId], INSERTED.[FirstName], INSERTED.[LastName], INSERTED.[PhoneNumber], INSERTED.[Email], INSERTED.[TotalPurchasesAmount] " +
                     "VALUES (@FirstName, @LastName, @PhoneNumber, @Email, @TotalPurchasesAmount)", connection);
 
@@ -39,7 +43,7 @@ namespace CustomerDatalayer.Repositories
             using (var connection = GetConnection())
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand("SELECT * FROM [Customers] WHERE CustomerId = @CustomerId", connection);
+                SqlCommand command = new SqlCommand($"SELECT * FROM [{TableName}] WHERE CustomerId = @CustomerId", connection);
 
                 command.Parameters.Add(
                     new SqlParameter("@CustomerId", SqlDbType.Int)
@@ -65,7 +69,7 @@ namespace CustomerDatalayer.Repositories
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand(
-                "UPDATE [Customers] " +
+                $"UPDATE [{TableName}] " +
                 "SET " +
                     "FirstName = @FirstName, " +
                     "LastName = @LastName, " +
@@ -92,7 +96,7 @@ namespace CustomerDatalayer.Repositories
             using (var connection = GetConnection())
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand("DELETE FROM [Customers] WHERE CustomerId = @CustomerId", connection);
+                SqlCommand command = new SqlCommand($"DELETE FROM [{TableName}] WHERE CustomerId = @CustomerId", connection);
 
                 command.Parameters.Add(
                     new SqlParameter("@CustomerId", SqlDbType.Int)
@@ -119,25 +123,9 @@ namespace CustomerDatalayer.Repositories
                     connection);
                 command.ExecuteNonQuery();
                 command = new SqlCommand(
-                    "DELETE FROM [Customers]",
+                    $"DELETE FROM [{TableName}]",
                     connection);
                 command.ExecuteNonQuery();
-            }
-        }
-
-        public List<Customer> GetAll()
-        {
-            using (var connection = GetConnection())
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand("SELECT * FROM [Customers]", connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                List<Customer> customers = new List<Customer>();
-                while (reader.Read())
-                    customers.Add(new Customer(reader));
-
-                return customers;
             }
         }
     }

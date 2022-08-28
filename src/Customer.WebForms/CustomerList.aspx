@@ -20,4 +20,8 @@
            <% } %>
     </table>
 
+    <asp:Button ID="btnPrev" CssClass="btn btn-secondary" Text="Prev" runat="server" OnClick="OnClickPrev"></asp:Button>
+    
+    <asp:Button ID="btnNext" CssClass="btn btn-secondary" Text="Next" runat="server" OnClick="OnClickNext"></asp:Button>
+
 </asp:Content>

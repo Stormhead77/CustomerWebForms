@@ -1,13 +1,17 @@
 ﻿using CustomerDatalayer.Entities;
 using CustomerDatalayer.Interfaces;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace CustomerDatalayer.Repositories
 {
-    public class AddressRepository : BaseRepository, IRepository<Address>
+    public class AddressRepository : BaseRepository<Address>, IRepository<Address>
     {
+        public AddressRepository()
+        {
+            TableName = "Customers";
+        }
+
         public Address Create(Address address)
         {
             using (var connection = GetConnection())
@@ -118,22 +122,6 @@ namespace CustomerDatalayer.Repositories
                     "DELETE FROM [Addresses]",
                     connection);
                 command.ExecuteNonQuery();
-            }
-        }
-
-        public List<Address> GetAll()
-        {
-            using (var connection = GetConnection())
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand("SELECT * FROM [Addresses]", connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                List<Address> adresses = new List<Address>();
-                while (reader.Read())
-                    adresses.Add(new Address(reader));
-
-                return adresses;
             }
         }
     }

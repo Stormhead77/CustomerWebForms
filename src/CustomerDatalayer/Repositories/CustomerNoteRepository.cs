@@ -1,13 +1,17 @@
 ﻿using CustomerDatalayer.Entities;
 using CustomerDatalayer.Interfaces;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace CustomerDatalayer.Repositories
 {
-    public class CustomerNoteRepository : BaseRepository, IRepository<CustomerNote>
+    public class CustomerNoteRepository : BaseRepository<CustomerNote>, IRepository<CustomerNote>
     {
+        public CustomerNoteRepository()
+        {
+            TableName = "Customers";
+        }
+
         public CustomerNote Create(CustomerNote address)
         {
             using (var connection = GetConnection())
@@ -95,22 +99,6 @@ namespace CustomerDatalayer.Repositories
                     "DELETE FROM [CustomerNotes]",
                     connection);
                 command.ExecuteNonQuery();
-            }
-        }
-
-        public List<CustomerNote> GetAll()
-        {
-            using (var connection = GetConnection())
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand("SELECT * FROM [CustomerNotes]", connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                List<CustomerNote> notes = new List<CustomerNote>();
-                while (reader.Read())
-                    notes.Add(new CustomerNote(reader));
-
-                return notes;
             }
         }
     }
