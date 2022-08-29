@@ -8,10 +8,7 @@ namespace CustomerDatalayer.Repositories
 {
     public class CustomerRepository : BaseRepository<Customer>, IRepository<Customer>
     {
-        public CustomerRepository()
-        {
-            TableName = "Customers";
-        }
+        public override string TableName => "Customers";
 
         public Customer Create(Customer customer)
         {

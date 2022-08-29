@@ -6,7 +6,7 @@ namespace CustomerDatalayer.Repositories
 {
     public abstract class BaseRepository<TEntity>
     {
-        public string TableName;
+        public abstract string TableName { get; }
 
         public static SqlConnection GetConnection()
         {

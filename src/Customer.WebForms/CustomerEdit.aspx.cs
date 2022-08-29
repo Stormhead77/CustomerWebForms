@@ -1,11 +1,14 @@
-﻿using System;
+﻿using CustomerDatalayer.Repositories;
+using System;
+using System.Collections.Generic;
 
 namespace Customer.WebForms
 {
     public partial class CustomerEdit : System.Web.UI.Page
     {
-        CustomerDatalayer.Repositories.CustomerRepository CustomerRepository = new CustomerDatalayer.Repositories.CustomerRepository();
+        CustomerRepository CustomerRepository = new CustomerRepository();
         CustomerDatalayer.Entities.Customer Customer;
+        protected List<CustomerDatalayer.Entities.Address> Addresses;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -23,7 +26,14 @@ namespace Customer.WebForms
                     lastName.Text = Customer.LastName;
                     phoneNumber.Text = Customer.PhoneNumber;
                     email.Text = Customer.Email;
+
+                    var addressRepository = new AddressRepository();
+                    Addresses = addressRepository.GetAddressesByCustimerId(Customer.Id);
                 }
+            }
+            else
+            {
+                Addresses = new List<CustomerDatalayer.Entities.Address>();
             }
         }
 
@@ -55,11 +65,16 @@ namespace Customer.WebForms
 
         protected void OnClickDelete(object sender, EventArgs e)
         {
-            var customerRepository = new CustomerDatalayer.Repositories.CustomerRepository();
+            var customerRepository = new CustomerRepository();
             var customerIdStr = Request.QueryString["customerId"];
             customerRepository.Delete(int.Parse(customerIdStr));
 
             Response.Redirect("CustomerList.aspx");
+        }
+        
+        protected void OnClickAddAddress(object sender, EventArgs e)
+        {
+            Response.Redirect("AddressEdit.aspx?customerId=" + Customer.Id);
         }
     }
 }

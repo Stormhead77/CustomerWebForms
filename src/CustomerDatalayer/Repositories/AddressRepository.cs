@@ -1,5 +1,6 @@
 ﻿using CustomerDatalayer.Entities;
 using CustomerDatalayer.Interfaces;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -7,10 +8,7 @@ namespace CustomerDatalayer.Repositories
 {
     public class AddressRepository : BaseRepository<Address>, IRepository<Address>
     {
-        public AddressRepository()
-        {
-            TableName = "Customers";
-        }
+        public override string TableName => "Addresses";
 
         public Address Create(Address address)
         {
@@ -59,10 +57,10 @@ namespace CustomerDatalayer.Repositories
                     {
                         return new Address(reader);
                     }
+                    
+                    return null;
                 }
             }
-
-            return null;
         }
 
         public int Update(Address address)
@@ -122,6 +120,29 @@ namespace CustomerDatalayer.Repositories
                     "DELETE FROM [Addresses]",
                     connection);
                 command.ExecuteNonQuery();
+            }
+        }
+
+        public List<Address> GetAddressesByCustimerId(int customerId)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand($"SELECT * FROM [{TableName}] WHERE CustomerId = @CustomerId", connection);
+
+                command.Parameters.Add(new SqlParameter("@CustomerId", SqlDbType.Int) { Value = customerId });
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    var res = new List<Address>();
+
+                    while (reader.Read())
+                    {
+                        res.Add(new Address(reader));
+                    }
+                    
+                    return res;
+                }
             }
         }
     }
